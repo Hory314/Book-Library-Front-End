@@ -1,0 +1,19 @@
+.content {
+    border: 1px solid black;
+    margin: 0 auto;
+    min-height: 200px;
+}
+
+#status {
+    display: block;
+    background-color: #470047;
+    color: #e20000;
+}
+
+.book-info {
+    border: 1px solid green;
+}
+
+.hidden {
+    display: none;
+}
