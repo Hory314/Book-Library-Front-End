@@ -1,7 +1,8 @@
-let status = function (statusText)
+let status = function (type, url)
 {
     let statusEl = $("#status");
-    statusEl.text(statusText);
+    let href = $("<a>").attr("href", url).text(url).css("color","inherit").attr("target","_blank");
+    statusEl.text("Pobrano metodą " + type + " z ").append(href);
 };
 
 let fillInfo = function (element, data)
@@ -31,13 +32,12 @@ let fillContent = function (data)
     });
 };
 
-function getBookData (event)
+function getBookData()
 {
     let bookInfoDiv = $(this).next("div.book-info");
     let divWithId = $(this).parent();
     let bookId = divWithId.attr("data-book-id"); // book id
     console.log(bookId); // log
-
 
     $.ajax({
         url: 'http://localhost:8282/books/' + bookId,
@@ -47,28 +47,24 @@ function getBookData (event)
         {
             bookInfoDiv.text(data);
             fillInfo(bookInfoDiv, data);
-            status("Pobrano metodą " + this.type + " z " + this.url);
+            status(this.type, this.url);
             bookInfoDiv.slideToggle(300);
         });
 
-    event.stopImmediatePropagation(); // nie wywoluj zwyklego likniecia ze slideToggle
-    $(this).off("click","h1");
+    $(this).on("click", false); // $(this)em jest H1 który został kliknięty. Dodaje mu pusty eventListener wiec nie bedzie juz dzialal
+                                // , false = Cancel action and prevent the event bubbling up by returning false
+    $(this).on("click", slideOnly); // i od razu daje mu event tylko ze sliderem
+}
+
+function slideOnly()
+{
+    $(this).next("div").slideToggle(300);
 }
 
 let detailsAction = function ()
 {
     let mainContentDiv = $("div.content");
-    console.log(mainContentDiv);
-
-    mainContentDiv.on("click", "h1", getBookData); //
-
-    mainContentDiv.on("click", "h1", function (event)
-    {
-        let bookInfoDiv = $(this).next("div.book-info");
-        bookInfoDiv.slideToggle(300);
-    });
-
-
+    mainContentDiv.on("click", "h1", getBookData);
 };
 
 
@@ -81,16 +77,13 @@ let initData = function ()
         .done(function (data)
         {
             fillContent(data);
-            status("Pobrano metodą " + this.type + " z " + this.url);
+            status(this.type, this.url);
         });
-
 };
 
 $(document).ready(function ()
 {
-
     initData();
     //add action on click to h1
     detailsAction();
-
 });
