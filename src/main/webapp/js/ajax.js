@@ -29,7 +29,7 @@ function getBookData()
     console.log(bookId); // log
 
     $.ajax({
-        url: 'http://localhost:8282/books/' + bookId,
+        url: '/booksLibraryAPI/books/' + bookId,//'http://localhost:8282/books/' + bookId,
         type: 'GET'
     })
         .done(function (data)
@@ -92,7 +92,8 @@ let detailsAction = function ()
         //console.log(dataToSend);
 // update
         $.ajax({
-            url: (bookForm.find("input[name=id]").val() === "" ? 'http://localhost:8282/books/' : 'http://localhost:8282/books/' + bookForm.find("[name=id]").val()),
+            //url: (bookForm.find("input[name=id]").val() === "" ? 'http://localhost:8282/books/' : 'http://localhost:8282/books/' + bookForm.find("[name=id]").val()),
+            url: (bookForm.find("input[name=id]").val() === "" ? '/booksLibraryAPI/books/' : '/booksLibraryAPI/books/' + bookForm.find("[name=id]").val()),
             type: (bookForm.find("input[name=id]").val() === "" ? 'POST' : 'PUT'),
             contentType: 'application/json', // trzeba ustawic bo inaczej (415)
             data: JSON.stringify(bookForm.find("input[name=id]").val() === "" ? dataToSend : data2Update),
@@ -134,7 +135,8 @@ function editBook()
     formEl.find("input[name=id]").val(bookId);
 
     $.ajax({
-        url: 'http://localhost:8282/books/' + bookId,
+        //url: 'http://localhost:8282/books/' + bookId,
+        url: '/booksLibraryAPI/books/' + bookId,
         type: 'GET'
     })
         .done(function (data)
@@ -157,7 +159,8 @@ function removeBook()
     let bookId = divWithId.attr("data-book-id"); // book id
 
     $.ajax({
-        url: 'http://localhost:8282/books/' + bookId,
+        //url: 'http://localhost:8282/books/' + bookId,
+        url: '/booksLibraryAPI/books/' + bookId,
         type: 'DELETE'
     }).done(function ()
     {
@@ -213,7 +216,7 @@ function createRow(book)
 let initData = function ()
 {
     $.ajax({
-        url: 'http://localhost:8282/books/',
+        url: '/booksLibraryAPI/books/', // 'http://localhost:8282/books/',
         type: 'GET'
     })
         .done(function (data)
